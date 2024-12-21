@@ -1,21 +1,9 @@
 import { useState } from "react";
 import "./App.css";
+import CreateTodo from "./components/CreateTodo";
 
 function App() {
-   const [newItem, setNewItem] = useState("");
    const [todos, setTodos] = useState([]);
-
-   function handleSubmit(e) {
-      e.preventDefault();
-
-      setTodos((currentTodos) => {
-         return [
-            ...currentTodos,
-            { id: crypto.randomUUID(), title: newItem, completed: false },
-         ];
-      });
-      setNewItem("");
-   }
 
    function toggleTodo(id, completed) {
       setTodos((currentTodos) => {
@@ -36,21 +24,22 @@ function App() {
       });
    }
 
+   function addTodo(newItem) {
+      setTodos((currentTodos) => {
+         return [
+            ...currentTodos,
+            { id: Date.now(), title: newItem, completed: false },
+         ];
+      });
+   }
+
    return (
       <>
-         <form onSubmit={handleSubmit} className="items-new">
-            <div className="form-row">
-               <label htmlFor="item">New Item</label>
-               <input
-                  type="text"
-                  id="item"
-                  value={newItem}
-                  onChange={(e) => setNewItem(e.target.value)}
-               />
-            </div>
-            <button className="btn">Add Item</button>
-         </form>
+         {/* Add TODO */}
+         <CreateTodo addTodo={addTodo} />
+
          <h1 className="header">Todo List</h1>
+
          <ul className="list">
             {todos.length === 0 && "No todos"}
             {todos.map((todo) => {
